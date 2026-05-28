@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+server/.env*
+
+# Build output
+client/dist/
+client/build/
+
+# Logs
+*.log
+npm-debug.log*
+npm-error.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker volumes
+mongo-data/
+
+# IDE
+.vscode/
+.idea/
+
+# Coverage
+coverage/
+
+# Python
+__pycache__/
+*.pyc
+
+# Secrets / certs
+*.pem
+*.key
