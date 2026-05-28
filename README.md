@@ -1,3 +1,7 @@
+```md
+![CI](https://github.com/danileslie/group2-capstone/actions/workflows/ci.yml/badge.svg)
+```
+
 # PeerConnect
 
 A peer study group and resource sharing platform for students. PeerConnect helps students collaborate through study groups, resource sharing, scheduling, and AI-generated quizzes.
