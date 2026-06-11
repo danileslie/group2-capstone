@@ -1,6 +1,5 @@
-```md
 ![CI](https://github.com/danileslie/group2-capstone/actions/workflows/ci.yml/badge.svg)
-```
+
 
 # PeerConnect
 
