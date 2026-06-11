@@ -4,6 +4,8 @@ set -euo pipefail
 # ---------------------------------------------------------------------------
 # bootstrap.sh — PeerConnect project setup
 # Run from the repo root on a fresh Ubuntu 22.04 instance.
+# echo "[bootstrap] NODE_ENV=development — running seed..."
+# node server/src/db/seed.js
 # Requires: node, npm already installed.
 # ---------------------------------------------------------------------------
 
@@ -51,10 +53,11 @@ NODE_ENV="${NODE_ENV:-development}"
 if [ "$NODE_ENV" = "production" ]; then
   log "NODE_ENV=production — skipping seed."
 else
-  log "NODE_ENV=$NODE_ENV — running seed..."
-  node "$REPO_ROOT/server/src/db/seed.js"
+  log "Skipping seed for Week 3 lab (MongoDB not configured)."
+  # node "$REPO_ROOT/server/src/db/seed.js"
 fi
 
 # ---------------------------------------------------------------------------
 
 log "Bootstrap complete."
+ 
