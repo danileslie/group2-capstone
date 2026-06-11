@@ -1,0 +1,116 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: |
+            server/package-lock.json
+            client/package-lock.json
+
+      - name: Install server dependencies
+        run: npm ci --prefix server
+
+      - name: Install client dependencies
+        run: npm ci --prefix client
+
+      - name: Lint (placeholder — add eslint to enable)
+        run: echo "No lint script configured. Add eslint to server/client to enable."
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: |
+            server/package-lock.json
+            client/package-lock.json
+
+      - name: Install server dependencies
+        run: npm ci --prefix server
+
+      - name: Install client dependencies
+        run: npm ci --prefix client
+
+      - name: Test (placeholder — add jest/vitest to enable)
+        run: echo "No test script configured. Add jest or vitest to server/client to enable."
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
+
+      - name: Install client dependencies
+        run: npm ci --prefix client
+
+      - name: Build client
+        run: npm run build --prefix client
+
+  health:
+    name: Health Check
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      PORT: 5000
+      NODE_ENV: test
+      JWT_SECRET: ci-test-secret
+      MONGO_URI: mongodb://localhost:27017/peerconnect_test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: server/package-lock.json
+
+      - name: Install server dependencies
+        run: npm ci --prefix server
+
+      - name: Start server in background
+        run: node server/src/app.js &
+
+      - name: Wait for server to be ready
+        run: |
+          for i in $(seq 1 10); do
+            curl -s localhost:5000/health && break
+            echo "Waiting for server... ($i)"
+            sleep 2
+          done
+
+      - name: Assert health returns 200
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" localhost:5000/health)
+          echo "Health status: $STATUS"
+          [ "$STATUS" = "200" ] || (echo "Health check failed with status $STATUS" && exit 1)
