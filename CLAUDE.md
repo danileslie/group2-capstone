@@ -40,6 +40,16 @@ Deployment: Docker on EC2
 - Keep components modular
 - Use GitHub pull requests for all changes
 
+## Branch Naming Convention
+
+feature/PROJ-XX-short-description
+bugfix/PROJ-XX-short-description
+
+# Examples:
+# feature/ETG2-12-user-login
+# bugfix/ETG2-31-null-pointer-on-login
+# Never push directly to dev or main.
+
 ## What Claude Should NOT Do
 
 - Do not install packages without approval
