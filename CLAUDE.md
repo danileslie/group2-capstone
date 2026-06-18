@@ -50,6 +50,19 @@ bugfix/PROJ-XX-short-description
 # bugfix/ETG2-31-null-pointer-on-login
 # Never push directly to dev or main.
 
+## Jira Smart Commits
+
+Include the Jira issue key and a smart commit command in your commit message to automatically update the issue status:
+
+ETG2-XX #done             — transitions the issue to Done
+ETG2-XX #comment <text>   — adds a comment to the issue
+
+# Example commit message:
+# ETG2-53 #done add smart commit convention to CLAUDE.md
+
+The Jira project is configured to process smart commits on push.
+Always include the issue key so the commit is linked to the ticket.
+
 ## What Claude Should NOT Do
 
 - Do not install packages without approval
