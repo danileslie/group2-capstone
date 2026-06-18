@@ -1,0 +1,20 @@
+name: Deploy to Staging
+on:
+  push:
+    branches: [dev]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH deploy to staging
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ubuntu
+          key: ${{ secrets.SSH_STAGING_KEY }}
+          script: |
+            cd ~/app
+            git pull origin dev
+            npm ci --production
+            npm run db:migrate
+            pm2 restart app || pm2 start npm --name app -- start
