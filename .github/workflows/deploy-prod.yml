@@ -1,1 +1,23 @@
 name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: SSH deploy to production
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PROD_KEY }}
+          script: |
+            cd ~/app
+            git pull origin main
+            npm ci --production
+            npm run db:migrate
+            pm2 restart app || pm2 start npm --name app -- start
