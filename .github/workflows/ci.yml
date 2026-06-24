@@ -40,7 +40,9 @@ jobs:
       - name: Install server dependencies
         run: npm ci --prefix server
       - name: Run tests
-        run: npm test --prefix server
+        run: |
+          npm test --prefix server -- --coverage \
+            --coverageThreshold='{"global":{"lines":80,"branches":70}}'
 
   build:
     name: Build
