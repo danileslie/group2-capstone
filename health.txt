@@ -1,1 +1,2 @@
 health ok
+CI test
