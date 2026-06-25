@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
-    "test": "jest --rootDir .. --testMatch '**/tests/**/*.test.js'"
+    "test": "jest --rootDir .. --testMatch '**/tests/**/*.test.js'",
+    "db:check": "node -e \"require('dotenv').config({ path: '../.env' }); require('./src/db/connection')().then(() => process.exit(0)).catch(err => { console.error(err.message); process.exit(1); })\""
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
