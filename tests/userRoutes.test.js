@@ -1,6 +1,10 @@
 const request = require('supertest');
 const app = require('../server/src/app');
 
+jest.mock('../server/src/users/User', () => ({
+  create: jest.fn(data => Promise.resolve(data)),
+}));
+
 describe('POST /api/users/register', () => {
   test('should return 201 and user object without password field on valid registration', async () => {
     const res = await request(app)
