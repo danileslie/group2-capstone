@@ -8,7 +8,11 @@ const PORT = process.env.PORT || 5000;
 
 async function startServer() {
   try {
-    await connectDB();
+    if (process.env.SKIP_DB_CONNECTION === 'true') {
+      console.log('Skipping MongoDB connection');
+    } else {
+      await connectDB();
+    }
 
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
