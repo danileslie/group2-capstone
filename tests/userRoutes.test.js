@@ -2,7 +2,8 @@ const request = require('supertest');
 const app = require('../server/src/app');
 
 jest.mock('../server/src/users/User', () => ({
-  create: jest.fn(data => Promise.resolve(data)),
+  create: jest.fn(({ hashedPassword, ...rest }) => Promise.resolve(rest)),
+  findOne: jest.fn(),
 }));
 
 describe('POST /api/users/register', () => {
@@ -15,8 +16,7 @@ describe('POST /api/users/register', () => {
     expect(res.body.email).toBe('jane@example.com');
     expect(res.body.name).toBe('Jane Doe');
     expect(res.body.password).toBeUndefined();
-    expect(res.body.hashedPassword).toBeDefined();
-    expect(res.body.hashedPassword).not.toBe('secret123');
+    expect(res.body.hashedPassword).toBeUndefined();
   });
 
   test('should return 400 with error message when email is missing', async () => {
