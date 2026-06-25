@@ -1,24 +1,26 @@
-function createGroup({ name, owner } = {}) {
+const Group = require('./Group');
+
+async function createGroup({ name, owner } = {}) {
   if (!name) throw new Error('Name is required');
   if (!owner) throw new Error('Owner is required');
 
-  return {
-    name,
-    owner,
-    members: [owner],
-    invitations: [],
-  };
+  const group = await Group.create({ name, owner, members: [owner], invitations: [] });
+
+  return group;
 }
 
-function inviteToGroup(group, userId) {
-  if (group.invitations.includes(userId)) {
+async function inviteToGroup(groupId, userId) {
+  const group = await Group.findById(groupId);
+  if (!group) throw new Error('Group not found');
+
+  if (group.invitations.map(id => id.toString()).includes(userId.toString())) {
     throw new Error('User already invited');
   }
 
-  return {
-    ...group,
-    invitations: [...group.invitations, userId],
-  };
+  group.invitations.push(userId);
+  await group.save();
+
+  return group;
 }
 
 module.exports = { createGroup, inviteToGroup };

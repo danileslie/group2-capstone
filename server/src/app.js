@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const healthRouter = require('./routes/health');
 const userRouter = require('./routes/userRoutes');
+const groupRouter = require('./routes/groupRoutes');
 
 const app = express();
 
@@ -12,5 +13,6 @@ app.use(express.json());
 
 app.use('/health', healthRouter);
 app.use('/api/users', userRouter);
+app.use('/api/groups', groupRouter);
 
 module.exports = app;
